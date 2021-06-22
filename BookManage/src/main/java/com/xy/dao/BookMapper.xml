@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xy.dao.BookMapper">
+
+    <select id="queryByType" resultType="book">
+        select *
+        from book
+        <where>
+            <if test="bookId != null">
+                bookId = #{ bookId }
+            </if>
+            <if test="bookName != null">
+                and bookName like #{ bookName }
+            </if>
+            <if test="bookType != null">
+                and bookType = #{ bookType }
+            </if>
+            <if test="publisher != null">
+                and publisher = #{ publisher }
+            </if>
+        </where>
+    </select>
+
+    <insert id="addBook">
+        insert into book(bookName, publisher, bookType, price, count)
+        values (#{ bookName}, #{ publisher }, #{ bookType }, #{ price }, #{ count })
+    </insert>
+
+    <update id="updateBook">
+        update book
+        <set>
+            <if test="bookName != null">
+                bookName = #{ bookName },
+            </if>
+            <if test="bookType != null">
+                bookType = #{ bookType },
+            </if>
+            <if test="publisher != null">
+                publisher = #{ publisher },
+            </if>
+            <if test="price != null">
+                price = #{ price },
+            </if>
+            <if test="count != null">
+                count = #{ count }
+            </if>
+        </set>
+        where bookId = #{ bookId }
+    </update>
+
+    <delete id="deleteBook">
+        delete from book
+        where bookId = #{ bookId }
+    </delete>
+
+    <select id="queryBookName" resultType="string">
+        select bookName
+        from book
+        where bookId = #{ bookId }
+    </select>
+</mapper>

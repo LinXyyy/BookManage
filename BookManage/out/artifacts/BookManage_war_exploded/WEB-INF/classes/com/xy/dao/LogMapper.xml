@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xy.dao.LogMapper">
+    <select id="getLog" resultType="log">
+        select *
+        from log
+    </select>
+
+    <insert id="addLog" parameterType="log">
+        insert into log(userName, date, methodName, bookName)
+        values(#{ userName }, #{date}, #{ methodName }, #{ bookName })
+    </insert>
+</mapper>

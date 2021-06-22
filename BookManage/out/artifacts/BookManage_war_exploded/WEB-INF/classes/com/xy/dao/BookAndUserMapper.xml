@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xy.dao.BookAndUserMapper">
+
+    <resultMap id="user_book" type="book">
+        <result property="bookId" column="bookId"/>
+        <result property="bookName" column="bookName"/>
+        <result property="publisher" column="publisher"/>
+        <result property="bookType" column="bookType"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="date" column="beginDate"/>
+    </resultMap>
+
+    <insert id="addRecord">
+        insert into user_book(userAccount, bookId, beginDate)
+        values (#{ account }, #{ bookId }, #{ date })
+    </insert>
+
+    <delete id="deleteRecord">
+        delete from user_book
+        where userAccount = #{ account } and bookId = #{ bookId }
+    </delete>
+
+    <select id="queryRecord" resultType="object">
+        select *
+        from user_book
+        where userAccount = #{ account } and bookId = #{ bookId }
+    </select>
+
+    <select id="queryBookOnBorrowed" resultMap="user_book">
+        select *
+        from book b, user_book u
+        where b.bookId in (
+            select bookId
+            from user_book
+            where userAccount = #{ account }
+            )
+    </select>
+
+    <select id="queryBookIsBorrowed" resultType="object">
+        select *
+        from user_book
+        where bookId = #{ bookId }
+    </select>
+</mapper>
